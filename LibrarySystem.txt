@@ -1,0 +1,122 @@
+import java.util.ArrayList;
+import java.util.List;
+
+// Book class to represent a book entity
+class Book {
+    private String title;
+    private String author;
+    private String category;
+    private boolean available;
+
+    // Constructor
+    public Book(String title, String author, String category) {
+        this.title = title;
+        this.author = author;
+        this.category = category;
+        this.available = true;
+    }
+
+    // Getters and setters
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+}
+
+// Library class to manage the library system
+class Library {
+    private List<Book> books;
+
+    public Library() {
+        this.books = new ArrayList<>();
+    }
+
+    // Add a book to the library
+    public void addBook(Book book) {
+        books.add(book);
+    }
+
+    // Get all books
+    public List<Book> getAllBooks() {
+        return books;
+    }
+
+    // Search for books by title
+    public List<Book> searchBooksByTitle(String keyword) {
+        List<Book> searchResults = new ArrayList<>();
+        for (Book book : books) {
+            if (book.getTitle().toLowerCase().contains(keyword.toLowerCase())) {
+                searchResults.add(book);
+            }
+        }
+        return searchResults;
+    }
+
+    // Issue a book
+    public void issueBook(Book book) {
+        if (book.isAvailable()) {
+            book.setAvailable(false);
+            System.out.println("Book '" + book.getTitle() + "' issued successfully.");
+        } else {
+            System.out.println("Book '" + book.getTitle() + "' is not available for issuance.");
+        }
+    }
+
+    // Return a book
+    public void returnBook(Book book) {
+        book.setAvailable(true);
+        System.out.println("Book '" + book.getTitle() + "' returned successfully.");
+    }
+}
+
+public class LibrarySystem {
+    public static void main(String[] args) {
+        // Create library instance
+        Library library = new Library();
+
+        // Add books to the library
+        library.addBook(new Book("The Great Gatsby", "F. Scott Fitzgerald", "Fiction"));
+        library.addBook(new Book("To Kill a Mockingbird", "Harper Lee", "Fiction"));
+        library.addBook(new Book("1984", "George Orwell", "Fiction"));
+
+        // Get all books in the library
+        List<Book> allBooks = library.getAllBooks();
+        System.out.println("All Books in the Library:");
+        for (Book book : allBooks) {
+            System.out.println("Title: " + book.getTitle() + ", Author: " + book.getAuthor() +
+                    ", Category: " + book.getCategory() + ", Available: " + book.isAvailable());
+        }
+
+        // Search for books by title
+        String searchKeyword = "kill";
+        List<Book> searchResults = library.searchBooksByTitle(searchKeyword);
+        System.out.println("\nSearch Results for '" + searchKeyword + "':");
+        for (Book book : searchResults) {
+            System.out.println("Title: " + book.getTitle() + ", Author: " + book.getAuthor() +
+                    ", Category: " + book.getCategory() + ", Available: " + book.isAvailable());
+        }
+
+        // Issue a book
+        Book bookToIssue = searchResults.get(0);
+        library.issueBook(bookToIssue);
+
+        // Return a book
+        Book bookToReturn = searchResults.get(1);
+        library.returnBook(bookToReturn);
+    }
+}
